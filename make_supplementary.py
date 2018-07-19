@@ -143,11 +143,12 @@ def crop_images(img_names, crops):
         img_name, ignore = os.path.splitext(img_name)
         crop_names_tmp = []
         for crop_id, crop in enumerate(crops):
-            # PIL crop:  left, top, right, and bottom pixel
-            result = tmp_image.crop((crop[0], crop[1], crop[2], crop[3]))
-            crop_names_tmp.extend([sep(out_dir + os.sep + img_name + "_crop_" + str(crop_id) + ".png")])
-            # print crop_names_tmp[-1]
-            result.save(crop_names_tmp[-1])
+            crop_filename = sep(out_dir + os.sep + img_name + "_crop_" + str(crop_id) + ".png")
+            if not os.path.isfile(crop_filename):
+                # PIL crop:  left, top, right, and bottom pixel
+                result = tmp_image.crop((crop[0], crop[1], crop[2], crop[3]))
+                result.save(crop_filename)
+            crop_names_tmp.extend([crop_filename])
         crop_names.append(crop_names_tmp)
     return crop_names
 
